@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+body {
+  @apply bg-gray-100 text-gray-900;
+}
+
+.slide-enter-active, .slide-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+
+.slide-enter-from, .slide-leave-to {
+  opacity: 0;
+}
+
+.slide-enter-active > div:last-child,
+.slide-leave-active > div:last-child {
+  transition: transform 0.4s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.slide-enter-from > div:last-child,
+.slide-leave-to > div:last-child {
+  transform: translateX(100%);
+}
