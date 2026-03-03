@@ -15,7 +15,7 @@ const cart = ref(JSON.parse(localStorage.getItem('cart') || '[]'));
 const isBasketOpen = ref(false)
 const isLoading = ref(true);
 
-const openBasket = () => (isBasketOpen.value = true, console.log('Basket opened'))
+const openBasket = () => (isBasketOpen.value = true)
 const closeBasket = () => (isBasketOpen.value = false)
 
 const handleLoginSuccess = async (data) => {
