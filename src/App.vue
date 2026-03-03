@@ -13,6 +13,7 @@ const favorites = ref([]);
 const currentPage = ref('home');
 const cart = ref(JSON.parse(localStorage.getItem('cart') || '[]'));
 const isBasketOpen = ref(false)
+const isLoading = ref(true);
 
 const openBasket = () => (isBasketOpen.value = true, console.log('Basket opened'))
 const closeBasket = () => (isBasketOpen.value = false)
@@ -78,14 +79,16 @@ onMounted(async () => {
 });
 
 onMounted(async () => {
+  isLoading.value = true; 
   try {
     const { data } = await axios.get('/items'); 
     items.value = data;
   } catch (err) {
     console.log('Error fetching items:', err);
+  } finally {
+    isLoading.value = false; 
   }
   await fetchFavorites();
-
 });
 
 const fetchFavorites = async () => {
@@ -169,6 +172,19 @@ const totalPrice = computed(() => {
 
     <h2 class="text-center text-2xl font-bold mt-10">{{ currentPage === 'favorites' ? 'Favorite Products' : 'Our Products' }}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mt-10 px-8 min-h-[85vh] items-start content-start">
+
+      <template v-if="isLoading">
+        <div v-for="n in 8" :key="n" 
+          class="relative flex flex-col justify-between h-[380px] m-2 border border-slate-200 rounded-3xl p-6 bg-white animate-pulse">
+          <div class="w-full h-40 bg-slate-100 rounded-xl mb-4"></div> <div class="w-3/4 h-4 bg-slate-100 rounded mb-2"></div>      <div class="w-1/2 h-4 bg-slate-100 rounded mb-4"></div>      <div class="flex justify-between items-end mt-auto">
+            <div class="space-y-2">
+              <div class="w-10 h-2 bg-slate-100 rounded"></div>
+              <div class="w-16 h-4 bg-slate-100 rounded"></div>
+            </div>
+            <div class="w-8 h-8 bg-slate-100 rounded-lg"></div>
+          </div>
+        </div>
+      </template>
 
       <template v-if="displayedItems.length > 0">
         <Card 
